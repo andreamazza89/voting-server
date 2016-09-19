@@ -75,6 +75,20 @@ describe('application logic', () => {
         entries: List.of('127', 'Trainspotting', '28 Days')
       }))
     });
+
+    it('marks winner when just one entry is left', () => {
+      const state = Map({
+        vote: Map({
+          pair: (List.of('Trainspotting', '28 Days')),
+          tally: Map({ 'Trainspotting': 4, '28 Days': 3 })
+        }),
+        entries: List()
+      });
+      const nextState = next(state);
+      expect(nextState).to.equal(Map({
+        winner: 'Trainspotting'
+      }))
+    });
   });
 
   describe('vote', () => {

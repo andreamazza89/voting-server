@@ -6,12 +6,17 @@ export function setEntries(state, entries) {
 
 export function next(state) {
   const winners = getWinners(state.get('vote'))
-console.log(winners)
   const entries = state.get('entries').concat(winners);
-  return state.merge({
-    vote: Map({ pair: entries.take(2) }),
-    entries: entries.skip(2)
-  });
+  if (entries.size === 1) {
+    return state.remove('vote')
+                .remove('entries')
+                .set('winner', entries.first());
+  } else {
+    return state.merge({
+      vote: Map({ pair: entries.take(2) }),
+      entries: entries.skip(2)
+    });
+  }
 }
 
 export function vote(state, entry) {
